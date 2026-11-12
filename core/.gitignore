@@ -1,0 +1,52 @@
+# .gitignore di Globo8, per categorie. Il criterio: nel repository va solo quello che
+# serve a lavorare; dati, segreti e prodotti di build restano sul PC di chi li ha.
+
+# --- Dati reali (clienti, utenti): mai in Git ------------------------------
+# Dump del DB. Fa eccezione lo schema senza dati.
+database/*.sql
+database/*.sql.gz
+database/*.dump
+database/*.utf16-original
+database/*.bak
+!database/globo_schema.sql
+# File caricati dagli utenti e log dell'applicazione (dati runtime, non codice)
+src/upload/
+src/globo_log/
+
+# --- Segreti -----------------------------------------------------------------
+# Valori veri dei segnaposto __PROD_*__ letti dal build (modello: *.example.ps1)
+tools/*.local.ps1
+.env
+.env.local
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+
+# --- Prodotti di build e strumenti -------------------------------------------
+# Pacchetti zip di deploy (le copie spedite stanno in C:\Temp\Globo-core-pacchetti\)
+/dist/
+phpstan-output.txt
+database/anonymize/.venv/
+tools/anonymize/.venv/
+__pycache__/
+
+# --- Ambiente Docker locale ----------------------------------------------------
+docker/data/
+docker/mysql-data/
+
+# --- Materiale solo locale -----------------------------------------------------
+# Appunti personali e riferimenti di design, non documentazione del progetto
+docs/istruzioni-progetto-migrazione-core.txt
+design-handoff/
+
+# --- Editor, sistema, temporanei ---------------------------------------------
+.claude/
+.vscode/
+.idea/
+*.code-workspace
+Thumbs.db
+.DS_Store
+*.log
+*.tmp
+*.bak

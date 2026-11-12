@@ -1,0 +1,33 @@
+﻿# Container temporaneo per anonimizzazione del dump DB Globo
+# Uso: docker compose -f docker/anonymize/docker-compose.yml up -d
+#      ... (operazioni di anonimizzazione) ...
+#      docker compose -f docker/anonymize/docker-compose.yml down -v
+#
+# IMPORTANTE: questo container non e per sviluppo, e usa-e-getta.
+# Lo sviluppo avra un setup separato in docker/dev/
+
+services:
+  mariadb-anonymize:
+    image: mariadb:10.11
+    container_name: globo-anonymize-db
+    restart: "no"
+    environment:
+      MARIADB_ROOT_PASSWORD: anonymize_only_local
+      MARIADB_DATABASE: globo_kosmosol
+      MARIADB_CHARACTER_SET_SERVER: utf8mb4
+      MARIADB_COLLATION_SERVER: utf8mb4_unicode_ci
+    ports:
+      - "127.0.0.1:33306:3306"
+    volumes:
+      - mariadb_anonymize_data:/var/lib/mysql
+    networks:
+      - anonymize_isolated
+
+volumes:
+  mariadb_anonymize_data:
+    name: globo_anonymize_data
+
+networks:
+  anonymize_isolated:
+    name: globo_anonymize_net
+    driver: bridge

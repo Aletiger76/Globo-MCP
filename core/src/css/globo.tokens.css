@@ -1,0 +1,194 @@
+/* ============================================================
+   Globo CRM — Design Tokens
+   Palette, tipografia, spaziature, ombre, motion.
+   Invariante tra tutti i cloni: non modificare per customizzare
+   un cliente, usare globo.themes.css.
+
+   Nota font: Inter e JetBrains Mono sono caricati da Google
+   Fonts CDN. Per deploymnent offline/intranet, sostituire
+   questo @import con un self-hosting locale.
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+:root {
+  /* ─── NEUTRALS (warm-cool, base intranet) ───────────────── */
+  --n-0:   #FFFFFF;
+  --n-25:  #FAFAFB;
+  --n-50:  #F4F5F7;
+  --n-100: #ECEEF1;
+  --n-150: #E2E5EA;
+  --n-200: #CFD3DA;
+  --n-300: #ADB3BD;
+  --n-400: #8A909B;
+  --n-500: #686E78;
+  --n-600: #4A5059;
+  --n-700: #2E333B;
+  --n-800: #1A1D22;
+  --n-900: #0E1116;
+
+  /* ─── SEMANTIC SURFACE ──────────────────────────────────── */
+  --bg-app:       var(--n-50);
+  --bg-surface:   var(--n-0);
+  --bg-raised:    var(--n-0);
+  --bg-sunken:    var(--n-100);
+  --bg-input:     #F6F7F9;
+  --bg-input-hov: #F0F2F5;
+
+  /* ─── SEMANTIC TEXT ─────────────────────────────────────── */
+  --fg-1:        var(--n-800);
+  --fg-2:        var(--n-700);
+  --fg-3:        var(--n-500);
+  --fg-4:        var(--n-400);
+  --fg-muted:    var(--n-300);
+  --fg-on-brand: #FFFFFF;
+  --fg-link:     var(--brand);
+
+  /* ─── BORDERS ───────────────────────────────────────────── */
+  --border-1:     var(--n-150);
+  --border-2:     var(--n-200);
+  --border-focus: var(--brand);
+  --border-input: transparent;
+
+  /* ─── STATE / FEEDBACK ──────────────────────────────────── */
+  --ok-700:      #0B7A3F;
+  --ok-500:      #14A85A;
+  --ok-100:      #E5F6EC;
+  --danger-700:  #B8121B;
+  --danger-500:  #E10010;
+  --danger-100:  #FDE7E9;
+  --warn-700:    #8A5A00;
+  --warn-500:    #E6A100;
+  --warn-100:    #FFF4DA;
+  --info-700:    #0E5AA8;
+  --info-500:    #1E7CD6;
+  --info-100:    #E5F0FB;
+
+  /* ─── ELEVATION ─────────────────────────────────────────── */
+  --shadow-0:    none;
+  --shadow-1:    0 1px 2px rgba(14,17,22,.04);
+  --shadow-2:    0 2px 8px rgba(14,17,22,.05), 0 1px 2px rgba(14,17,22,.04);
+  --shadow-3:    0 8px 24px rgba(14,17,22,.06), 0 2px 6px rgba(14,17,22,.04);
+  --shadow-4:    0 20px 48px rgba(14,17,22,.08), 0 4px 10px rgba(14,17,22,.04);
+  --shadow-focus: 0 0 0 3px rgba(var(--brand-rgb) / .18);
+
+  /* ─── RADII ─────────────────────────────────────────────── */
+  --r-xs:   4px;
+  --r-sm:   6px;
+  --r-md:   10px;
+  --r-lg:   14px;
+  --r-xl:   20px;
+  --r-2xl:  28px;
+  --r-pill: 999px;
+
+  /* ─── SPACING ───────────────────────────────────────────── */
+  --sp-0:  0;
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  20px;
+  --sp-6:  24px;
+  --sp-7:  32px;
+  --sp-8:  40px;
+  --sp-9:  56px;
+  --sp-10: 72px;
+
+  /* ─── TYPE FAMILIES ─────────────────────────────────────── */
+  --font-sans:    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+
+  /* ─── TYPE SCALE ────────────────────────────────────────── */
+  --fs-12: 12px;
+  --fs-13: 13px;
+  --fs-14: 14px;
+  --fs-15: 15px;
+  --fs-16: 16px;
+  --fs-18: 18px;
+  --fs-20: 20px;
+  --fs-24: 24px;
+  --fs-28: 28px;
+  --fs-32: 32px;
+  --fs-40: 40px;
+  --fs-48: 48px;
+
+  /* ─── LINE HEIGHT / WEIGHT ──────────────────────────────── */
+  --lh-tight:   1.1;
+  --lh-snug:    1.25;
+  --lh-normal:  1.5;
+  --lh-relaxed: 1.65;
+
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+
+  /* ─── MOTION ────────────────────────────────────────────── */
+  --ease-out:  cubic-bezier(.16,.84,.3,1);
+  --ease-in:   cubic-bezier(.7,0,.84,0);
+  --ease-soft: cubic-bezier(.32,.72,.36,1);
+  --dur-fast:  120ms;
+  --dur-base:  200ms;
+  --dur-slow:  360ms;
+
+  /* ─── LAYOUT ────────────────────────────────────────────── */
+  --shell-max: 1440px;
+  --topbar-h:  68px;
+  --row-h:     76px;
+}
+
+/* ─── CLASSI TIPOGRAFICHE ─────────────────────────────────── */
+
+html, body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-15);
+  line-height: var(--lh-normal);
+  color: var(--fg-2);
+  background: var(--bg-app);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.h1 { font-family: var(--font-sans); font-weight: 700; font-size: var(--fs-32); line-height: var(--lh-tight); color: var(--fg-1); letter-spacing: -.01em; }
+.h2 { font-family: var(--font-sans); font-weight: 700; font-size: var(--fs-24); line-height: var(--lh-snug); color: var(--fg-1); letter-spacing: -.005em; }
+.h3 { font-family: var(--font-sans); font-weight: 600; font-size: var(--fs-20); line-height: var(--lh-snug); color: var(--fg-1); }
+.h4 { font-family: var(--font-sans); font-weight: 600; font-size: var(--fs-18); line-height: var(--lh-snug); color: var(--fg-1); }
+
+p { font-size: var(--fs-15); line-height: var(--lh-normal); color: var(--fg-2); }
+
+.lead  { font-size: var(--fs-16); line-height: var(--lh-relaxed); color: var(--fg-3); }
+.small { font-size: var(--fs-13); line-height: var(--lh-normal);  color: var(--fg-3); }
+.micro { font-size: var(--fs-12); line-height: 1.35;              color: var(--fg-4); }
+
+/* Eyebrow: etichette colonna e sezione — all caps, spaziato */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--fs-12);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  background: var(--bg-sunken);
+  border-radius: var(--r-xs);
+  padding: 0.1em 0.35em;
+  color: var(--fg-1);
+}
+
+/* Titolo pagina: italic display + eyebrow sottotitolo */
+.page-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: var(--fs-40);
+  line-height: 1;
+  letter-spacing: -.01em;
+  color: var(--fg-1);
+  margin: 0;
+}
+.page-title + .eyebrow { margin-top: var(--sp-2); display: block; }

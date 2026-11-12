@@ -1,0 +1,47 @@
+table.tab_est {
+  background-color: #ffffff;
+}
+
+table.tab_int {
+  border: 3px solid #000000;
+  border-collapse: collapse;
+  margin: 0px;
+}
+
+td.tab_int_td {
+  font-size: 16px;
+  line-height: 22px;
+  background-color: transparent;
+  border: 1px solid #000000;
+  color: #000000;
+  padding: 20px 25px 20px 25px;
+}
+
+input.input_text {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  color: #000000;
+  border: none;
+  padding: 0px 0px 0px 0px;
+  background-color: #ebebeb;
+}
+
+textarea {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  color: #000000;
+  border: none;
+  padding: 0px 0px 0px 0px;
+  background-color: #ebebeb;
+  resize: vertical;
+}
+
+table.tab_fatt {
+  border: 1px solid #000000;
+  border-collapse: collapse;
+}
+
+table.tab_fatt td {
+  border: 1px solid #000000;
+  padding: 5px 8px 5px 8px;
+}
