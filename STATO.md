@@ -19,7 +19,7 @@ Da leggere a inizio lavoro; si aggiorna a ogni deploy, decisione o lavoro inizia
 
 ## In corso
 
-- Nessun lavoro sul codice. Passaggio su GitHub: vedi `STATO.md` di Globo8.
+- Nessun lavoro in corso.
 
 ## Core
 

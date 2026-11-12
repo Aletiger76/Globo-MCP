@@ -43,6 +43,7 @@ nel README di Globo8, sezione «Lavorare sul progetto». Per questo repository:
 ## Aggiornare il core
 
 ```
+git remote add globo-core https://github.com/Aletiger76/globo8.git    # una volta, dopo il clone
 git subtree pull --prefix=core globo-core main --squash
 ```
 
