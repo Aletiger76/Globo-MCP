@@ -1,0 +1,26 @@
+-- 2026-06-17 — Rimozione integrazione MEXAL: pulizia DB
+--
+-- DB:      kosmosol   (DB legacy KosmoSol; i cron MEXAL vi accedevano con nome
+--                      hardcoded in cron-schedule.php / cron-runner.php, ora eliminati)
+-- Tabella: cron_schedule  (conteneva la riga cron_name = 'MEXAL_API')
+--
+-- Contesto: dismissione completa di MEXAL (vedi commit core 5d4f52f). I file PHP
+-- che usavano questa tabella sono stati eliminati; ora la tabella è orfana.
+-- MEXAL_API era l'UNICO cron gestito (cron-runner.php non implementava altri job),
+-- quindi la tabella si può rimuovere per intero.
+--
+-- ⚠️ Eseguire SOLO sul DB `kosmosol` di PRODUZIONE (globo-ks.kosmosol.it).
+--    In dev la tabella non esiste (il DB `kosmosol` non è presente in locale):
+--    nessuna azione richiesta in sviluppo.
+--
+-- Verifica prima (facoltativa, per conferma che non ci siano altri cron):
+--   USE kosmosol;
+--   SELECT * FROM cron_schedule;        -- atteso: solo la riga 'MEXAL_API'
+--
+-- Comando (esempio):
+--   mysql -u<user> -p kosmosol < 2026-06-17_drop_cron_schedule.sql
+--
+-- Promemoria deploy correlato (NON SQL): rimuovere dalla crontab di sistema la
+-- voce che invocava cron/cron-runner.php (file eliminato).
+
+DROP TABLE IF EXISTS cron_schedule;

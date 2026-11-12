@@ -1,0 +1,94 @@
+/* ============================================================
+   Globo CRM — Temi per cliente
+   ============================================================
+   Solo le variabili brand cambiano per clone. Tutto il resto
+   (neutri, tipografia, spaziature, ombre) è in globo.tokens.css.
+
+   Per applicare un tema:  <body data-theme="blu-ks">
+   Per un nuovo clone: aggiungere un blocco [data-theme="nome"]
+   con le 7 variabili qui sotto.
+
+   --brand-rgb  è la versione numerica di --brand (R G B separati
+   da spazio, senza virgole) — serve per le ombre con trasparenza:
+   rgba(var(--brand-rgb) / .45)
+   ============================================================ */
+
+/* ── Default: Blu KosmoSol ─────────────────────────────────── */
+:root,
+[data-theme="blu-ks"] {
+  --brand:      #005ea4;
+  --brand-600:  #004f8c;
+  --brand-700:  #003d6d;
+  --brand-100:  #dceef9;
+  --brand-50:   #eef6fc;
+  --brand-rgb:  0 94 164;
+  --shadow-cta: 0 10px 24px -8px rgba(0,94,164,.45), 0 2px 4px rgba(0,94,164,.20);
+}
+
+/* ── Rosso 5stelle (hospitality) ───────────────────────────── */
+[data-theme="rosso-5stelle"] {
+  --brand:      #E30613;
+  --brand-600:  #C90411;
+  --brand-700:  #A8030E;
+  --brand-100:  #FDECEE;
+  --brand-50:   #FFF5F6;
+  --brand-rgb:  227 6 19;
+  --shadow-cta: 0 10px 24px -8px rgba(227,6,19,.45), 0 2px 4px rgba(227,6,19,.20);
+}
+
+/* ── Blu Atlante (finance / logistics) ─────────────────────── */
+[data-theme="blu-atlante"] {
+  --brand:      #1455CC;
+  --brand-600:  #1148AE;
+  --brand-700:  #0D3A8E;
+  --brand-100:  #E4EEFC;
+  --brand-50:   #F2F7FE;
+  --brand-rgb:  20 85 204;
+  --shadow-cta: 0 10px 24px -8px rgba(20,85,204,.45), 0 2px 4px rgba(20,85,204,.20);
+}
+
+/* ── Verde Querce (retail / agribusiness) ──────────────────── */
+[data-theme="verde-querce"] {
+  --brand:      #1E8A4D;
+  --brand-600:  #166F3D;
+  --brand-700:  #115A31;
+  --brand-100:  #E3F4EA;
+  --brand-50:   #F1FAF4;
+  --brand-rgb:  30 138 77;
+  --shadow-cta: 0 10px 24px -8px rgba(30,138,77,.42), 0 2px 4px rgba(30,138,77,.20);
+}
+
+/* ── Viola Mosaico (public-sector / cultural) ──────────────── */
+[data-theme="viola-mosaico"] {
+  --brand:      #6E2EB8;
+  --brand-600:  #5C239C;
+  --brand-700:  #491C7D;
+  --brand-100:  #EFE6FA;
+  --brand-50:   #F8F3FD;
+  --brand-rgb:  110 46 184;
+  --shadow-cta: 0 10px 24px -8px rgba(110,46,184,.42), 0 2px 4px rgba(110,46,184,.20);
+}
+
+/* ── Arancio Piacenza (MLAcquePiacenza) ────────────────────── */
+[data-theme="arancio-piacenza"] {
+  --brand:      #E17F0F;
+  --brand-600:  #B4660C;
+  --brand-700:  #8C4F09;
+  --brand-100:  #FBF0E2;
+  --brand-50:   #FEF9F3;
+  --brand-rgb:  225 127 15;
+  --shadow-cta: 0 10px 24px -8px rgba(225,127,15,.45), 0 2px 4px rgba(225,127,15,.20);
+}
+
+/* ── Verde Casa (agenzia immobiliare) ──────────────────────── */
+/* Campionato dal logo reale (logo_verdecasa.png): verde dominante #2ACF37,
+   rosso secondario nel logo non usato qui (design system a un solo accento). */
+[data-theme="verde-casa"] {
+  --brand:      #268E24;
+  --brand-600:  #1E721D;
+  --brand-700:  #185816;
+  --brand-100:  #E2F0E2;
+  --brand-50:   #F8FBF8;
+  --brand-rgb:  38 142 36;
+  --shadow-cta: 0 10px 24px -8px rgba(38,142,36,.45), 0 2px 4px rgba(38,142,36,.20);
+}

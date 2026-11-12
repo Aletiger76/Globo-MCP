@@ -1,0 +1,74 @@
+# Ambiente di sviluppo Globo - baseline PHP 5.6 (proxy per 5.4 di produzione)
+# Stack: Apache + PHP 5.6 / MariaDB 10.11 / phpMyAdmin
+# Avvio: docker compose up -d
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/php8/Dockerfile
+    container_name: globo-web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/apache/globo.conf:/etc/apache2/sites-available/000-default.conf:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - globo-net
+    restart: unless-stopped
+
+  db:
+    image: mariadb:10.11
+    container_name: globo-db
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: rootpass_dev
+      MARIADB_DATABASE: globo
+      MARIADB_USER: globo
+      MARIADB_PASSWORD: globopass_dev
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database:/docker-entrypoint-initdb.d:ro
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-storage-engine=InnoDB
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - globo-net
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    container_name: globo-pma
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: rootpass_dev
+      UPLOAD_LIMIT: 256M
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - globo-net
+    restart: unless-stopped
+
+volumes:
+  db_data:
+    name: globo_db_data
+
+networks:
+  globo-net:
+    name: globo-net
+    driver: bridge

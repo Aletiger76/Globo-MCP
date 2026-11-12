@@ -1,0 +1,29 @@
+td.tab_int_td_1 {
+  border: 1px solid #7f7f7f;
+  background-color: #fed4a4;
+  color: #000000;
+}
+
+td.tab_int_td_2 {
+  border: 1px solid #7f7f7f;
+  background-color: #d3d3d3;
+}
+
+td.tab_int_td_3 {
+  border: 1px solid #7f7f7f;
+  background-color: #eeeeee;
+}
+
+td.tab_int_td_4 {
+  font-size: 11px;
+  background-color: #b9d7d6;
+  border: 1px solid #7f7f7f;
+  padding: 6px 6px 6px 6px;
+}
+
+td.tab_int_td_5 {
+  font-size: 11px;
+  background-color: #c5df8e;
+  border: 1px solid #7f7f7f;
+  padding: 6px 6px 6px 6px;
+}

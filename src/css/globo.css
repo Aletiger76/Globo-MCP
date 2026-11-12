@@ -1,0 +1,365 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+html {
+  height: 101%;
+}
+
+body {
+  margin: 0px 0px 0px 0px;
+  padding: 12px 5px 12px 5px;
+  background-color: #979797;
+  text-align: center;
+  color: #000000;
+  font-family: "Poppins", sans-serif;
+}
+
+form {
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+}
+
+button {
+  font-family: "Poppins", sans-serif;
+}
+
+a {
+  cursor: pointer;
+}
+
+a:link,
+a:visited,
+a:active {
+  color: #000000;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #000000;
+  text-decoration: underline;
+}
+
+.allCopy {
+  -webkit-user-select: all; /* Chrome all / Safari all */
+  -moz-user-select: all; /* Firefox all */
+  -ms-user-select: all; /* IE 10+ */
+  user-select: all; /* Likely future */
+}
+
+input {
+  font-family: "Poppins", sans-serif;
+}
+
+input.input_text,
+textarea {
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  color: #000000;
+  border: none;
+  padding: 2px 3px 2px 3px;
+}
+
+input.standard {
+  width: 350px;
+}
+
+textarea.standard {
+  width: 350px;
+}
+
+textarea {
+  resize: none;
+}
+
+input.data {
+  width: 75px;
+}
+
+select {
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  border: none;
+  padding: 1px 1px 1px 1px;
+}
+
+input[type="submit"]::-moz-focus-inner {
+  padding: 0px 0px 0px 0px;
+  border: none;
+}
+
+input.input_bottone {
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  color: #333;
+  font-weight: 500;
+  width: 260px;
+  padding: 4px 0px 4px 0px;
+  margin: 0px;
+  vertical-align: middle;
+  background-color: #dbdbdb;
+  border: 1px solid #b5b5b5;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+input.input_bottone_dis {
+  font-family: "Poppins", sans-serif;
+  font-size: 11px;
+  color: #999999;
+  font-weight: bold;
+  width: 260px;
+  padding: 4px 0px 4px 0px;
+  margin: 0px;
+  vertical-align: middle;
+  background-color: #dbdbdb;
+  border: 1px solid #b5b5b5;
+  cursor: pointer;
+}
+
+input.input_bottone_data {
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  color: #333;
+  font-weight: 500;
+  width: 260px;
+  padding: 4px 0px 4px 0px;
+  margin: 0px;
+  vertical-align: middle;
+  background-color: #dbdbdb;
+  border: 1px solid #b5b5b5;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+input.input_bottone_home {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  width: 340px;
+  height: 75px;
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-color: #dbdbdb;
+  padding-top: 42px;
+  border: 1px solid #b5b5b5;
+  border-radius: 20px;
+  margin: 0px;
+  cursor: pointer;
+}
+
+input.input_bottone_cal {
+  font-family: "Poppins", sans-serif;
+  background-color: #c5c5c5;
+  color: #000000;
+  font-weight: 600;
+  font-size: 14px;
+  width: 90px;
+  padding: 3px 0px 3px 0px;
+  margin: 0px;
+  border: 0px;
+  cursor: pointer;
+}
+
+input.input_bottone_cal_oggi {
+  font-family: "Poppins", sans-serif;
+  background-color: #979797;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  width: 90px;
+  padding: 3px 0px 3px 0px;
+  margin: 0px;
+  border: 0px;
+  cursor: pointer;
+}
+
+div.div_home {
+  background-color: #eeeeee;
+  width: 100%;
+  margin: 5px 0px 0px 0px;
+  padding: 5px 0px 5px 0px;
+}
+
+table.tab_home td {
+  padding: 5px 5px 5px 5px;
+}
+
+table.tab_est {
+  width: 1000px;
+  background-color: #f5f5f5;
+  font-size: 14px;
+  text-align: center;
+}
+
+td.tab_est_td {
+  padding: 12px 12px 12px 12px;
+}
+
+table.tab_int {
+  margin-bottom: 5px;
+}
+
+td.tab_int_td_titolo {
+  font-size: 16px;
+  background-color: #93abc0;
+  color: #ffffff;
+  padding: 6px 6px 6px 6px;
+  border-top: 2px solid #f5f5f5;
+  border-bottom: 2px solid #f5f5f5;
+}
+
+td.tab_int_td_1 {
+  font-size: 14px;
+  background-color: #666;
+  color: #ffffff;
+  padding: 6px 6px 6px 6px;
+}
+
+td.tab_int_td_2 {
+  font-size: 12px;
+  background-color: #c5c5c5;
+  padding: 6px 6px 6px 6px;
+}
+
+td.tab_int_td_3 {
+  font-size: 12px;
+  background-color: #e8e8e8;
+  padding: 6px 6px 6px 6px;
+}
+
+table.tab_menu td {
+  padding: 6px 10px 3px 10px;
+}
+
+div.header {
+  color: #ababad;
+  font-size: 12px;
+  text-align: center;
+  padding-bottom: 5px;
+}
+
+div.footer {
+  color: #848484;
+  font-size: 11px;
+  text-align: center;
+  margin-top: 14px;
+}
+
+div.footer a:link,
+div.footer a:visited,
+div.footer a:active {
+  color: #848484;
+  text-decoration: none;
+}
+
+div.footer a:hover {
+  color: #848484;
+  text-decoration: underline;
+}
+
+.margin_top_bottoni {
+  margin-top: 5px;
+}
+
+.margin_bottom_bottoni {
+  margin-bottom: 5px;
+}
+
+.margin_top_blocchi {
+  margin-top: 10px;
+}
+
+.margin_bottom_blocchi {
+  margin-bottom: 10px;
+}
+
+.nobr {
+  white-space: nowrap;
+}
+
+.codice_cliente {
+  font-weight: 600;
+  font-size: 14px !important;
+}
+
+/* Slider */
+
+.box-slider {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  height: 75px;
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-color: #dbdbdb;
+  border: 1px solid #b5b5b5;
+  border-radius: 20px;
+  margin: 0px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #979797;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #00b74a;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #00b74a;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

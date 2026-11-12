@@ -1,0 +1,149 @@
+#!/usr/bin/env bash
+#
+# pre-commit hook — due controlli prima di ogni commit:
+#   A. DATI SENSIBILI nelle righe aggiunte (sempre, anche con Docker spento);
+#   B. SINTASSI PHP dei file .php in stage (solo se il container web e' attivo).
+# Copia canonica e versionata: vedi CLAUDE.md, sezione "Guardrail". Si installa con
+# tools/install-hooks.sh (nei cloni: core/tools/install-hooks.sh).
+#
+# QUESTO FILE E' UGUALE IN TUTTI I REPO (Globo8 e i cloni): non va personalizzato.
+# Quello che cambia da repo a repo si legge da solo:
+#
+#   - il NOME DEL CONTAINER da docker-compose.yml (la riga container_name del servizio
+#     web). Prima era scritto a mano in ogni copia, ed e' il tipo di dettaglio che si
+#     sbaglia copiando un file da un clone all'altro: l'hook resta li' senza dire niente
+#     e non controlla piu' niente;
+#   - i VALORI SEGRETI veri da tools/prod-secrets.local.ps1 del repo (non versionato):
+#     se uno di quei valori compare in una riga aggiunta, il commit si ferma;
+#   - il PERCORSO DEI SORGENTI non serve: per la sintassi non si controlla il file nella
+#     webroot ma il CONTENUTO STAGED (git show :file) passato a `php -l` via stdin.
+#
+# PERCHE' IL CONTROLLO A: i repository sono condivisi su GitHub. Un segreto finito in un
+# commit resta nella cronologia anche se il file viene corretto dopo: l'unico punto in
+# cui si ferma davvero e' prima del commit. Nei sorgenti i segreti sono segnaposti
+# __PROD_*__ (vedi tools/prod-secrets.example.ps1) e il build li rimette nel pacchetto.
+#
+# Il controllo B, se il container non e' attivo, viene SALTATO con un avviso: non si
+# blocca un commit solo perche' Docker e' spento.
+#
+# Falso allarme (es. un IP di prova, gli IP degli uffici KosmoSol in src/index.php nel
+# primo commit di un repo nuovo): controllare a occhio cosa sta entrando, poi
+#   git commit --no-verify
+# Bypass in emergenza: stesso comando, sapendo cosa si sta facendo.
+
+PROBLEMI=0
+segnala() { echo "[pre-commit] BLOCCATO: $1"; PROBLEMI=1; }
+
+# ════════════════════════════════════════════════════════════════════════════
+# A. Dati sensibili nelle righe AGGIUNTE (non nell'intero file: un file gia'
+#    committato non si ricontrolla a ogni modifica di una riga).
+# ════════════════════════════════════════════════════════════════════════════
+
+# Righe aggiunte, nella forma "file:riga". L'hook non controlla se' stesso: contiene
+# apposta le forme che cerca.
+AGGIUNTE=$(git diff --cached --no-color -U0 --diff-filter=AM | awk '
+  /^\+\+\+ b\// { f = substr($0, 7); next }
+  /^\+/ && !/^\+\+\+/ && f !~ /(^|\/)tools\/pre-commit$/ { print f ":" substr($0, 2) }')
+
+if [ -n "$AGGIUNTE" ]; then
+
+  # A1. IP interi. Ammessi: loopback, reti private, 0.x, maschere, versioni x.0.0.0, e le
+  #     tre reti riservate alla documentazione (RFC 5737: 192.0.2.x, 198.51.100.x,
+  #     203.0.113.x; l'anonimizzatore usa la prima per gli IP finti).
+  #     Nei documenti un IP di visitatore o di ufficio si scrive accorciato (93.71.x.x).
+  IP=$(printf '%s\n' "$AGGIUNTE" | grep -o -E '\b([0-9]{1,3}\.){3}[0-9]{1,3}\b' | sort -u |
+       grep -v -E '^(127\.|10\.|0\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[01])\.|255\.|192\.0\.2\.|198\.51\.100\.|203\.0\.113\.)' |
+       grep -v -E '\.0\.0\.0$' |
+       awk -F. '$1<=255 && $2<=255 && $3<=255 && $4<=255')
+  [ -n "$IP" ] && segnala "IP interi (nei documenti accorciarli, es. 93.71.x.x; nei config vanno nei segreti): $(echo $IP)"
+
+  # A2. I valori veri del file dei segreti locali, se c'e'. Si leggono le stringhe tra
+  #     apici di $ProdSecrets[...] e di User/Password in $ProdDb (Host e nomi dei DB no:
+  #     compaiono legittimamente nei config). Le liste IP vengono spezzate nei singoli IP.
+  if [ -f tools/prod-secrets.local.ps1 ]; then
+    VALORI=$(tr -d '\r' < tools/prod-secrets.local.ps1 | grep -v '^[[:space:]]*#' |
+      sed -n -E "s/^[[:space:]]*([\$]ProdSecrets\[[^]]*\]|User|Password)[[:space:]]*=[[:space:]]*['\"](.*)['\"][[:space:]]*(#.*)?\$/\2/p" |
+      sed "s/''/'/g" | sed -E 's/"[[:space:]]*,[[:space:]]*"/\n/g' | sort -u)
+    while IFS= read -r V; do
+      [ ${#V} -ge 6 ] || continue
+      printf '%s\n' "$AGGIUNTE" | grep -q -F -- "$V" &&
+        segnala "un valore segreto di tools/prod-secrets.local.ps1 ($(printf '%s' "$V" | cut -c1-2)…, ${#V} caratteri): nei sorgenti va il suo segnaposto __PROD_*__"
+    done <<< "$VALORI"
+  fi
+
+  # A3. Forme di chiavi API (anche se il file dei segreti non c'e', es. su un PC nuovo).
+  printf '%s\n' "$AGGIUNTE" | grep -q -E 'SG\.[A-Za-z0-9_-]{16,}' &&
+    segnala "una chiave SendGrid (SG.…): va in tools/prod-secrets.local.ps1, nel codice il segnaposto"
+  printf '%s\n' "$AGGIUNTE" | grep -q -E '\b[0-9a-f]{32}-us[0-9]+\b' &&
+    segnala "una chiave Mailchimp (…-usNN): va in tools/prod-secrets.local.ps1, nel codice il segnaposto"
+
+  # A4. Password SQL in chiaro. Ammesse solo negli script di init della copia Docker
+  #     locale (db-init/), dove le password sono di sviluppo per scelta (2026-11-11).
+  printf '%s\n' "$AGGIUNTE" | grep -v -E '^([^:]*/)?db-init/' | grep -q -i -E "IDENTIFIED BY '[^']" &&
+    segnala "una password in chiaro (IDENTIFIED BY) fuori da db-init/"
+fi
+
+# A5. File grossi: dump, misure e screenshot restano in locale.
+GROSSI=$(git diff --cached --name-only --diff-filter=AM -z | while IFS= read -r -d '' F; do
+  [ -f "$F" ] && [ "$(wc -c < "$F")" -gt 1048576 ] && printf '%s ' "$F"
+done)
+[ -n "$GROSSI" ] && segnala "file oltre 1 MB (dump e dati restano in locale): $GROSSI"
+
+if [ "$PROBLEMI" -ne 0 ]; then
+  echo ""
+  echo "[pre-commit] Commit bloccato dal controllo dei dati sensibili (tools/pre-commit)."
+  echo "             Se e' un falso allarme e hai controllato: git commit --no-verify"
+  exit 1
+fi
+
+# ════════════════════════════════════════════════════════════════════════════
+# B. Sintassi PHP del contenuto staged.
+# ════════════════════════════════════════════════════════════════════════════
+
+# Override manuale, per il caso in cui docker-compose.yml non sia leggibile o si voglia
+# puntare a un altro container: GLOBO_HOOK_CONTAINER=nome git commit ...
+CONTAINER="${GLOBO_HOOK_CONTAINER:-}"
+
+if [ -z "$CONTAINER" ] && [ -f docker-compose.yml ]; then
+  CONTAINER=$(grep -m1 -E '^[[:space:]]*container_name:[[:space:]]*[A-Za-z0-9_-]+-web' docker-compose.yml \
+              | sed -E 's/.*container_name:[[:space:]]*//' | tr -d '\r' | tr -d '[:space:]')
+fi
+
+PHP_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.php$')
+
+if [ -z "$PHP_FILES" ]; then
+  exit 0
+fi
+
+if [ -z "$CONTAINER" ]; then
+  echo "[pre-commit] ATTENZIONE: container web non individuato (docker-compose.yml) — check sintassi PHP saltato."
+  echo "             Forzabile con: GLOBO_HOOK_CONTAINER=<nome> git commit ..."
+  exit 0
+fi
+
+if ! docker inspect --format='{{.State.Running}}' "$CONTAINER" 2>/dev/null | grep -q '^true$'; then
+  echo "[pre-commit] ATTENZIONE: container '$CONTAINER' non attivo — check sintassi PHP saltato."
+  exit 0
+fi
+
+ERRORS=0
+
+while IFS= read -r FILE; do
+  [ -z "$FILE" ] && continue
+  RESULT=$(git show ":$FILE" | MSYS_NO_PATHCONV=1 docker exec -i "$CONTAINER" php -l 2>&1)
+  if [ $? -ne 0 ]; then
+    echo "[pre-commit] ERRORE SINTASSI: $FILE"
+    echo "$RESULT" | grep -v '^$' | sed 's/Standard input code/'"$(basename "$FILE")"'/'
+    ERRORS=$((ERRORS + 1))
+  fi
+done <<< "$PHP_FILES"
+
+if [ $ERRORS -gt 0 ]; then
+  echo ""
+  echo "[pre-commit] Commit bloccato: $ERRORS file con errori di sintassi PHP."
+  echo "             Correggi e ri-esegui 'git commit'."
+  echo "             (Bypass emergenza: git commit --no-verify)"
+  exit 1
+fi
+
+exit 0

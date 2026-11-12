@@ -1,0 +1,20 @@
+parameters:
+    level: 0
+    phpVersion: 80300
+    paths:
+        - src
+    excludePaths:
+        - src/ckeditor
+        - src/elfinder
+        - src/shadowbox
+        - src/phpmailer
+        - src/upload
+        - src/globo_log
+    bootstrapFiles:
+        - src/phpmailer/src/Exception.php
+        - src/phpmailer/src/PHPMailer.php
+        - src/phpmailer/src/SMTP.php
+    ignoreErrors:
+        # Path hardcoded di produzione/Windows — noti, documentati in refactoring-notes.md sezione HARDCODED
+        - identifier: require.fileNotFound
+        - identifier: requireOnce.fileNotFound
