@@ -1,0 +1,45 @@
+# Dump DB con dati reali — MAI in Git (CLAUDE.md §4: niente PII nei repo)
+# (i .sql di custom/database/migrations/ restano versionati: sono DDL/DML sicure)
+*.sql.zip
+*.sql.gz
+*.sql.bz2
+/db-init/dump/
+/_import/
+
+# Dati runtime con possibile PII reale — fuori da git (core + custom)
+core/src/upload/
+core/src/globo_log/
+custom/src/upload/
+custom/src/globo_log/
+
+# Backup del sorgente LIVE di produzione (dati reali embedded) — MAI in Git
+/backup/
+
+# Output di tools/build-package.ps1 (zip di deploy) — artefatto, non sorgente
+/dist/
+
+# Segreti di build locali (mai versionare)
+tools/*.local.ps1
+
+# Docker data
+docker/data/
+docker/mysql-data/
+
+# Credenziali
+.env
+.env.local
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+
+# OS / editor
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
+
+# File temporanei
+*.log
+*.tmp
+*.bak

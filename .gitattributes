@@ -1,0 +1,30 @@
+# Fine riga: tutti i file di testo sono LF, nel repository e nelle copie di lavoro, su
+# ogni PC e qualunque sia core.autocrlf. Decisione del 2026-11-11 (passaggio su GitHub):
+# - i pacchetti di deploy escono uguali byte per byte da qualunque PC. Prima il fine
+#   riga dipendeva da come era nato il file sulla copia di chi faceva il build (Globo8
+#   quasi tutto LF, i cloni quasi tutto CRLF), e il confronto col pacchetto online
+#   segnava come cambiati file intatti;
+# - gli script di shell girano nei container Linux: con CRLF non partono.
+# Nel repository i file erano gia' LF: la regola cambia solo le copie di lavoro.
+* text=auto eol=lf
+
+# Script di Windows: CRLF (cmd.exe con LF puo' sbagliare i salti)
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binari: mai toccati
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.xls binary
+*.xlsx binary
+*.ttf binary
+*.eot binary
+*.woff binary
+*.woff2 binary
+*.swf binary

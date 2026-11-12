@@ -1,0 +1,82 @@
+# Ambiente di sviluppo Globo MCP (clone mcprotection.it)
+# Stack isolato da KosmoSol/5stelle: porte 8100 (web) / 3308 (db) / 8101 (pma).
+# Avvio: docker compose up -d --build
+#
+# Webroot = composizione core+custom (overlay) fatta dall'entrypoint
+# compose-webroot.sh: core base + custom (override/aggiunte) + dev-overlay/config.
+# Vedi Globo8/docs/fase2-core-custom.md §5.
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/php8/Dockerfile
+    container_name: globomcp-web
+    ports:
+      - "8100:80"
+    volumes:
+      # Webroot composta dall'entrypoint (compose-webroot.sh): fonde i tre alberi
+      # sorgente, montati qui read-only. core = base, custom = override+aggiunte,
+      # dev-overlay/config = adattamenti d'ambiente dev. Dopo una modifica a uno dei
+      # tre: `docker compose restart web` per ricomporre.
+      - ./core/src:/opt/core:ro
+      - ./custom/src:/opt/custom:ro
+      - ./dev-overlay:/opt/dev-overlay:ro
+      - ./docker/apache/globo.conf:/etc/apache2/sites-available/000-default.conf:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - globomcp-net
+    restart: unless-stopped
+
+  db:
+    image: mariadb:10.11
+    container_name: globomcp-db
+    ports:
+      - "3308:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: rootpass_dev
+    volumes:
+      - globomcp_db_data:/var/lib/mysql
+      # Crea i database + l'utente dev all'inizializzazione del volume
+      - ./db-init:/docker-entrypoint-initdb.d:ro
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-storage-engine=InnoDB
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - globomcp-net
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    container_name: globomcp-pma
+    ports:
+      - "8101:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: rootpass_dev
+      UPLOAD_LIMIT: 256M
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - globomcp-net
+    restart: unless-stopped
+
+volumes:
+  globomcp_db_data:
+    name: globomcp_db_data
+
+networks:
+  globomcp-net:
+    name: globomcp-net
+    driver: bridge
