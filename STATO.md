@@ -28,6 +28,10 @@ cambierebbero il funzionamento (calendario, liste e schede progetto, temi, heade
 footer, e la rimozione di `prog_doc.php`/`prog_file.php`, la funzione documenti di
 progetto eliminata dal core per sicurezza). Allinearlo è un rilascio da collaudare.
 
+**Decisione (Alessandro, 2026-11-12): l'allineamento a `main` si fa alla prossima
+modifica di questo clone**, chiunque la faccia: prima `git subtree pull`, poi la modifica,
+un solo collaudo e un solo pacchetto per entrambe. Al deploy togliere a mano dal server `prog_doc.php` e `prog_file.php`.
+
 ## Aperti
 
 - `URL_GLOBO` nel config di produzione è ancora in `http://`: da valutare il passaggio a
